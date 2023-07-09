@@ -1,19 +1,54 @@
-import styled from 'styled-components';
+import {
+  Controls,
+  ProgressBar,
+  TrackInfos,
+} from '@/components/Player/composites/';
 
-const PlayerStyles = styled.div`
-  width: 100%;
-  height: 100%;
-  background-color: red 1px solid;
-`;
+import { css } from '@/styled-system/css';
+import { VStack } from '@/styled-system/jsx';
 
 export const Player = () => {
   return (
-    <PlayerStyles>
-      Player Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus,
-      illum consequatur. Architecto officiis alias, deserunt doloribus illo ab?
-      Quia molestiae eaque explicabo. Harum maxime ea repellendus voluptas
-      dicta, ducimus ipsa.
-    </PlayerStyles>
+    <div
+      className={css({
+        width: '100%',
+        height: '100%',
+        bg: 'primary',
+        p: '2',
+        rounded: 'sm',
+      })}
+    >
+      <VStack
+        className={css({
+          overflow: 'hidden',
+        })}
+        gap="2"
+      >
+        <div
+          className={css({
+            width: '100%',
+          })}
+        >
+          <img
+            className={css({ width: '100%', height: '100%' })}
+            src="https://m.media-amazon.com/images/I/A1AT1xuPEDL._UF894,1000_QL80_.jpg"
+            alt="cover mauvais ordre"
+          />
+        </div>
+
+        <VStack
+          gap="2"
+          className={css({
+            alignItems: 'center',
+            width: '10/12',
+          })}
+        >
+          <ProgressBar />
+          <Controls />
+          <TrackInfos />
+        </VStack>
+      </VStack>
+    </div>
   );
 };
 

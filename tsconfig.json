@@ -1,6 +1,6 @@
 {
-  "baseUrl": "./",
   "compilerOptions": {
+    "baseUrl": "./",
     /* Language and Environment */
     "target": "es2016",
     "lib": [
@@ -43,12 +43,11 @@
     // "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
-  "include": ["src"],
   // me
-  "paths": {
-    "@/*": ["src/*"]
-  },
   "references": [{ "path": "./tsconfig.node.json" }]
 }

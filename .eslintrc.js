@@ -40,7 +40,7 @@ module.exports = {
       env: {
         node: true,
       },
-      files: ['.eslintrc.{js,cjs}', 'package.json'],
+      files: ['.eslintrc.{js,cjs}'],
       parserOptions: {
         sourceType: 'script',
       },
@@ -67,6 +67,13 @@ module.exports = {
         ],
       },
     },
+    {
+      files: ['src/styled-system/**/*.mjs'],
+      rules: {
+        'import/extensions': ['error', 'ignorePackages', { mjs: 'always' }],
+        'import/no-unresolved': ['warn', { ignore: ['\\.mjs$'] }],
+      },
+    },
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -83,16 +90,10 @@ module.exports = {
   rules: {
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
-    '@typescript-eslint/no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
     'import/no-named-as-default': 0,
-    'import/no-relative-parent-imports': 'error',
 
-    'import/no-unused-modules': [
-      'error',
-      {
-        unusedExports: true,
-      },
-    ],
+    'import/no-unresolved': 'warn',
 
     'import/order': [
       'error',
@@ -135,7 +136,16 @@ module.exports = {
       },
     ],
 
-    'no-unused-vars': 'off',
+    'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+
+    'padding-line-between-statements': [
+      'error',
+      {
+        blankLine: 'always',
+        next: 'export',
+        prev: 'multiline-block-like',
+      },
+    ],
 
     //https://stackoverflow.com/questions/76624993/prettier-3-0-0-typeerror-prettier-resolveconfig-sync-is-not-a-function
     'prettier/prettier': [
@@ -174,10 +184,20 @@ module.exports = {
     ],
   },
   settings: {
+    'import/parsers': {
+      '@typescript-eslint/parser': ['.ts', '.tsx'],
+    },
     // https://stackoverflow.com/questions/55198502/using-eslint-with-typescript-unable-to-resolve-path-to-module
     'import/resolver': {
+      alias: {
+        extensions: ['.ts', '.js', '.jsx', '.json'],
+        map: [['@', './src']],
+      },
       node: {
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      },
+      typescript: {
+        alwaysTryTypes: true, // always try to resolve types under `<root>@types` directory even it doesn't contain any source code, like `@types/unist`
       },
     },
     react: {
