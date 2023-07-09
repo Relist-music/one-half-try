@@ -85,6 +85,8 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/no-unused-vars': 'off',
     'import/no-named-as-default': 0,
+    'import/no-relative-parent-imports': 'error',
+
     'import/no-unused-modules': [
       'error',
       {
@@ -181,5 +183,6 @@ module.exports = {
     react: {
       version: 'detect',
     },
+    typescript: {},
   },
 };
