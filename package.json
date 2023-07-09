@@ -6,12 +6,14 @@
   "scripts": {
     "start": "vite",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx ."
   },
   "devDependencies": {
     "@storybook/addon-essentials": "^7.0.26",
     "@storybook/addon-interactions": "^7.0.26",
     "@storybook/addon-links": "^7.0.26",
+    "@storybook/addon-viewport": "^7.0.26",
     "@storybook/blocks": "^7.0.26",
     "@storybook/react": "^7.0.26",
     "@storybook/react-vite": "^7.0.26",
@@ -25,11 +27,15 @@
     "eslint-config-prettier": "^8.8.0",
     "eslint-config-standard-with-typescript": "^36.0.0",
     "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-jsonc": "^2.9.0",
     "eslint-plugin-n": "^15.7.0",
+    "eslint-plugin-package-json": "^0.1.4",
     "eslint-plugin-prettier": "^5.0.0-alpha.2",
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-sort-keys-fix": "^1.1.2",
     "eslint-plugin-storybook": "^0.6.12",
+    "eslint-plugin-unused-imports": "^2.0.0",
     "prettier": "^3.0.0",
     "prop-types": "^15.8.1",
     "storybook": "^7.0.26",
