@@ -1,6 +1,7 @@
 import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
 import type { Preview } from '@storybook/react';
 // eslint-disable-next-line import/no-relative-parent-imports
+import '../src/styles/fonts.css';
 import '../src/index.css';
 
 const preview: Preview = {

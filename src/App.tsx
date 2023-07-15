@@ -1,3 +1,5 @@
+import Tag from '@/design-system/Tag/Tag';
+
 function App() {
   return (
     <>
@@ -7,6 +9,7 @@ function App() {
         nulla enim blanditiis provident unde et aspernatur reprehenderit ea
         accusamus atque similique dolorem!
       </div>
+      <Tag label="rap" />
     </>
   );
 }

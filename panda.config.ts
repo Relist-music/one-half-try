@@ -27,6 +27,9 @@ export default defineConfig({
           description: 'Primary color for background',
         },
       },
+      fonts: {
+        tag: { value: 'apfel-grotezk' },
+      },
     },
   },
   jsxFramework: 'react',

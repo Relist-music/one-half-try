@@ -1,5 +1,6 @@
 import {
   Controls,
+  Leftover,
   ProgressBar,
   TrackInfos,
 } from '@/components/Player/composites/';
@@ -16,6 +17,7 @@ export const Player = () => {
         bg: 'primary',
         p: '2',
         rounded: 'sm',
+        color: 'white',
       })}
     >
       <VStack
@@ -24,11 +26,7 @@ export const Player = () => {
         })}
         gap="2"
       >
-        <div
-          className={css({
-            width: '100%',
-          })}
-        >
+        <div className={css({ width: '100%' })}>
           <img
             className={css({ width: '100%', height: '100%' })}
             src="https://m.media-amazon.com/images/I/A1AT1xuPEDL._UF894,1000_QL80_.jpg"
@@ -46,6 +44,7 @@ export const Player = () => {
           <ProgressBar />
           <Controls />
           <TrackInfos />
+          <Leftover />
         </VStack>
       </VStack>
     </div>
