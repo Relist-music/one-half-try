@@ -7,7 +7,7 @@ import { cva } from '@/styled-system/css';
 const tagStyles = cva({
   base: {
     fontFamily: 'tag',
-    fontWeight: 'semibold',
+    fontWeight: 'medium',
     lineHeight: 'none',
     bg: 'yellow',
   },

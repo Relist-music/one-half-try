@@ -13,10 +13,10 @@ export const Player = () => {
     <div
       className={css({
         width: '100%',
-        height: '100%',
+        height: 'max-content',
         bg: 'primary',
-        p: '2',
-        rounded: 'sm',
+        p: '2.5',
+        rounded: 'md',
         color: 'white',
       })}
     >

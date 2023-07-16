@@ -26,6 +26,19 @@ export default defineConfig({
           value: '#1B2326',
           description: 'Primary color for background',
         },
+        dark: {
+          value: '#0F1112',
+          description: 'Dark color for background, make primary outstand',
+        },
+        grey: {
+          ...presetPanda.theme.tokens.colors.gray,
+        },
+        black: {
+          ...presetPanda.theme.tokens.colors.black,
+        },
+        white: {
+          ...presetPanda.theme.tokens.colors.white,
+        },
       },
       fonts: {
         tag: { value: 'apfel-grotezk' },
