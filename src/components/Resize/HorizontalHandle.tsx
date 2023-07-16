@@ -14,13 +14,22 @@ const HorizontalHandle = ({
     <PanelResizeHandle id={`resize-handle-${id}`}>
       <div
         className={css({
+          p: '2px',
           width: '100%',
-          height,
-          _hover: {
-            bg: 'grey.400',
-          },
+          height: 'min-content',
         })}
-      />
+      >
+        <div
+          className={css({
+            width: '100%',
+            height: '4px',
+            rounded: 'sm',
+            _hover: {
+              bg: 'grey.400',
+            },
+          })}
+        />
+      </div>
     </PanelResizeHandle>
   );
 };

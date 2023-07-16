@@ -3,5 +3,7 @@
 @layer reset, base, tokens, recipes, utilities; 
 
 html, body {
-  color: black;
+  color: white;
+  font-family: 'Switzer', sans-serif;
 }
+

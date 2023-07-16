@@ -14,14 +14,14 @@ const VerticalHandle = ({
     <PanelResizeHandle id={`resize-handle-${id}`}>
       <div
         className={css({
-          p: '4px',
+          p: '2px',
           height: '100%',
           width: 'min-content',
         })}
       >
         <div
           className={css({
-            width,
+            width: '4px',
             height: '100%',
             rounded: 'sm',
             _hover: {

@@ -1,5 +1,6 @@
 import { Panel, PanelGroup } from 'react-resizable-panels';
 
+import Main from '@/components/Main/Main';
 import VerticalHandle from '@/components/Resize/VerticalHandle';
 import Sidebar from '@/components/Sidebar/Sidebar';
 
@@ -16,7 +17,7 @@ const Temp = () => {
       className={css({
         padding: '2',
         bg: 'dark',
-        minHeight: 'min-content',
+        height: '100vh',
       })}
     >
       <PanelGroup
@@ -30,7 +31,7 @@ const Temp = () => {
         </Panel>
         <VerticalHandle />
         <Panel minSize={50} id="right-panel">
-          <div>hello</div>
+          <Main />
         </Panel>
       </PanelGroup>
     </div>

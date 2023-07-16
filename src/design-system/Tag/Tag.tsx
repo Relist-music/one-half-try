@@ -1,9 +1,5 @@
 import { cva } from '@/styled-system/css';
 
-// const a = () => cva({
-
-// })
-
 const tagStyles = cva({
   base: {
     fontFamily: 'tag',
@@ -14,7 +10,7 @@ const tagStyles = cva({
   variants: {
     size: {
       sm: {
-        padding: '0.1rem 0.5rem 0.1875rem 0.5rem',
+        padding: '0.13rem 0.5rem 0.1875rem 0.5rem',
       },
     },
     rounded: {
@@ -31,14 +27,16 @@ const tagStyles = cva({
 export const Tag = ({
   label,
   background,
+  color,
 }: {
   label: string;
   background?: string;
+  color?: string;
 }) => {
   return (
     <button
       className={tagStyles({ size: 'sm' })}
-      style={{ backgroundColor: background }}
+      style={{ backgroundColor: background, color }}
     >
       {label}
     </button>
