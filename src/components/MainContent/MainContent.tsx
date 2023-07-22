@@ -3,7 +3,7 @@ import { Container } from '@/styled-system/jsx/container';
 
 import Track from '../Track/Track';
 
-const Main = () => {
+const MainContent = () => {
   return (
     <div
       className={css({
@@ -23,18 +23,6 @@ const Main = () => {
           Main
         </h1>
         <div
-          id="spacing"
-          className={css({
-            height: '100px',
-            width: '100%',
-            bg: 'grey.400',
-            p: '2',
-            rounded: 'md',
-          })}
-        >
-          lorem
-        </div>
-        <div
           className={css({
             display: 'flex',
             flexDirection: 'column',
@@ -53,4 +41,4 @@ const Main = () => {
   );
 };
 
-export default Main;
+export default MainContent;

@@ -1,6 +1,6 @@
 import { css } from '@/styled-system/css';
 
-import Temp from './page/Temp';
+import Relist from './pages/Relist';
 
 function App() {
   return (
@@ -10,7 +10,7 @@ function App() {
         height: '100vh',
       })}
     >
-      <Temp />
+      <Relist />
     </div>
   );
 }
