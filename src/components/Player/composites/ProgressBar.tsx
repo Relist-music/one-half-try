@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 
+import { css } from '@/styled-system/css';
+
 const ProgressbarStyles = styled.div`
   width: 100%;
   border-radius: 4px;
@@ -18,7 +20,16 @@ const ProgressbarStyles = styled.div`
 
 const ProgressBar = () => {
   return (
-    <ProgressbarStyles className="progress-bar">
+    <ProgressbarStyles
+      className={[
+        css({
+          '@container (max-width: 200px)': {
+            display: 'none',
+          },
+        }),
+        'progress-bar',
+      ].join(' ')}
+    >
       <div className="active"></div>
     </ProgressbarStyles>
   );

@@ -11,6 +11,9 @@ const Leftover = () => {
         flexWrap: 'wrap',
         gap: '2',
         maxWidth: '100%',
+        '@container (max-width: 200px)': {
+          display: 'none',
+        },
       })}
     >
       <Tag label="rap" />

@@ -16,7 +16,10 @@ export default defineConfig({
   exclude: [],
 
   //
-
+  conditions: {
+    light: '[data-color-mode=light] &',
+    dark: '[data-color-mode=dark] &',
+  },
   // Useful for theme customization
   theme: {
     tokens: {

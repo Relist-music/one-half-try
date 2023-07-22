@@ -59,6 +59,9 @@ const Trackinfos = () => {
     <HStack
       className={css({
         maxWidth: '100%',
+        '@container (max-width: 200px)': {
+          display: 'none',
+        },
       })}
     >
       <div onClick={() => setExpaded((expanded) => !expanded)}>

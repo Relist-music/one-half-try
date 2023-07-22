@@ -5,5 +5,7 @@
 html, body {
   color: white;
   font-family: 'Switzer', sans-serif;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--colors-dark);
 }
-
