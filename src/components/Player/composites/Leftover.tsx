@@ -16,7 +16,7 @@ const Leftover = () => {
         },
       })}
     >
-      <Tag label="rap" />
+      <Tag label="rap" background="yellow" />
       <HStack
         gap={'1'}
         className={css({

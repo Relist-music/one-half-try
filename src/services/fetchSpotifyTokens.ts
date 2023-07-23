@@ -12,7 +12,8 @@ export const fetchSpotifyTokens = async (code: string) => {
         Authorization:
           'Basic ' +
           btoa(
-            `${process.env.NEXT_PUBLIC_CLIENT_ID}:${process.env.NEXT_PUBLIC_CLIENT_SECRET}`,
+            `${import.meta.env.VITE_SPOTIFY_CLIENT_ID}:
+            ${import.meta.env.VITE_SPOTIFY_REDIRECT_URI}`,
           ),
       },
     }).then((data) => data.json());

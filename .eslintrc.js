@@ -80,13 +80,7 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
-  plugins: [
-    'react',
-    'prettier',
-    '@typescript-eslint',
-    'sort-keys-fix',
-    'unused-imports',
-  ],
+  plugins: ['react', 'prettier', '@typescript-eslint', 'sort-keys-fix', 'unused-imports'],
   rules: {
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
@@ -102,14 +96,7 @@ module.exports = {
           caseInsensitive: true,
           order: 'asc',
         },
-        groups: [
-          'builtin',
-          'external',
-          'internal',
-          ['sibling', 'parent'],
-          'index',
-          'unknown',
-        ],
+        groups: ['builtin', 'external', 'internal', ['sibling', 'parent'], 'index', 'unknown'],
         'newlines-between': 'always',
         pathGroups: [
           {
@@ -129,6 +116,7 @@ module.exports = {
     'max-len': [
       'error',
       {
+        code: 97,
         ignoreStrings: true,
         ignoreTemplateLiterals: true,
         ignoreTrailingComments: true,
@@ -151,7 +139,7 @@ module.exports = {
     'prettier/prettier': [
       'error',
       {
-        printWidth: 80,
+        printWidth: 98,
         singleQuote: true,
       },
     ],

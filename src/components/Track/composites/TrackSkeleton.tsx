@@ -1,5 +1,5 @@
 import Skeleton from '@mui/material/Skeleton';
-import { Skeleton as AntdSkeleton } from 'antd';
+import { Skeleton as AntdSkeleton, Checkbox } from 'antd';
 
 import { css } from '@/styled-system/css';
 
@@ -11,7 +11,18 @@ const TrackSkeleton = () => (
       alignItems: 'center',
     })}
   >
-    <div></div>
+    <div
+      className={css({
+        paddingInline: '2',
+        display: 'flex',
+        alignItems: 'center',
+        _hover: {
+          bg: '#28333799',
+        },
+      })}
+    >
+      <Checkbox />
+    </div>
     <AntdSkeleton.Image
       active={true}
       className={css({

@@ -17,7 +17,6 @@ function ConnectWithSpotify() {
     show_dialog: String(true),
   }).toString()}`;
 
-  console.log({ url });
   window.location.href = url;
 }
 
@@ -45,8 +44,7 @@ const login = () => {
                 fontSize: 'xl',
               })}
             >
-              Relist is a music client, that helps with recommandations and
-              genres filtering
+              Relist is a music client, that helps with recommandations and genres filtering
             </p>
           </VStack>
           <VStack>
@@ -56,11 +54,7 @@ const login = () => {
               onClick={ConnectWithSpotify}
             />
             <div title="not available for now">
-              <ConnectButton
-                label="Connect with Apple Music"
-                bgColor="#F32239"
-                disabled
-              />
+              <ConnectButton label="Connect with Apple Music" bgColor="#F32239" disabled />
             </div>
           </VStack>
         </VStack>
