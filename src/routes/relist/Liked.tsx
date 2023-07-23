@@ -89,7 +89,7 @@ const Liked = () => {
         </div>
         <hr />
         <br />
-        <CountedGenres tracks={tracks.map(({ track }) => track)} />
+        <CountedGenres tracks={filteredTracks.map(({ track }) => track)} />
         <PlaylistCombobox />
       </div>
       <br />

@@ -1,12 +1,20 @@
+import { useContext, useEffect } from 'react';
+
 import useArtists from '@/hooks/useArtists';
 
+import { PlaylistContext } from '@/contexts/PlaylistContext';
 import Tag from '@/design-system/Tag/Tag';
 import { css } from '@/styled-system/css';
 
 const TrackGenresCell = ({ artistIds = [] }: { artistIds: string[] }) => {
-  const { data, isLoading } = useArtists({ artistIds });
+  const { setArtists } = useContext(PlaylistContext);
+  const { data: { artists = [] } = {}, isLoading } = useArtists({ artistIds });
 
-  if (!data) {
+  useEffect(() => {
+    setArtists((prev) => [...prev, ...artists]);
+  }, [artists]);
+
+  if (!artists) {
     return <h2>there was an error,please refresh</h2>;
   }
   if (isLoading) {
@@ -20,7 +28,7 @@ const TrackGenresCell = ({ artistIds = [] }: { artistIds: string[] }) => {
         flexWrap: 'wrap',
       })}
     >
-      {data.artists.map((artist) => {
+      {artists.map((artist) => {
         return artist.genres.map((genre) => <Tag key={`${artist.id}${genre}`} label={genre} />);
       })}
     </div>

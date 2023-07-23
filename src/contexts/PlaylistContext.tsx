@@ -25,11 +25,6 @@ const PlaylistContextProvider = ({ children }: { children: ReactNode }) => {
   const [artists, setArtists] = useState<SpotifyApi.ArtistObjectFull[]>([]);
   const [filters, setFilters] = useState<string[]>([]);
 
-  useEffect(() => {
-    tracks.map((track) => {
-      useArtists({ artistIds: track.artists.map((artist) => artist.id) });
-    });
-  }, []);
   return (
     <PlaylistContext.Provider
       value={{ tracks, setTracks, artists, setArtists, filters, setFilters }}

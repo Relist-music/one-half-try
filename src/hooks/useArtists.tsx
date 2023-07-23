@@ -6,7 +6,7 @@ const useArtists = ({ artistIds }: { artistIds: string[] }) => {
   const url = `https://api.spotify.com/v1/artists?ids=${artistIds.join(',')}`;
 
   return useQuery<SpotifyApi.MultipleArtistsResponse>({
-    queryKey: ['artists', ...artistIds.join(',')],
+    queryKey: ['artists', [...artistIds].join(',')],
     queryFn: async () => {
       try {
         const response = await fetch(url, {

@@ -8,6 +8,8 @@ const CountedGenres = ({ tracks }: { tracks: SpotifyApi.TrackObjectFull[] }) => 
   const [showAll, setShowAll] = useState(false);
   const { artists, setFilters } = useContext(PlaylistContext);
 
+  console.log('tracks', tracks, artists);
+
   const countedGenres = tracks
     .reduce(
       (acc, track) => {
@@ -23,6 +25,7 @@ const CountedGenres = ({ tracks }: { tracks: SpotifyApi.TrackObjectFull[] }) => 
             }
           });
         });
+        console.log('acc', acc)
         return acc;
       },
       [] as { name: string; count: number }[],
@@ -33,6 +36,8 @@ const CountedGenres = ({ tracks }: { tracks: SpotifyApi.TrackObjectFull[] }) => 
 
   const hasLotOfGenres = countedGenres.length > 5;
   const limit = 5;
+
+  console.log('countedGenres', countedGenres)
 
   const addToFilters = (genre: string) => {
     setFilters((prev) => [...prev, genre]);
