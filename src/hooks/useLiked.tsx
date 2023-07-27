@@ -2,7 +2,11 @@ import { useQuery } from '@tanstack/react-query';
 
 import { refreshAccessToken } from '@/services/refreshAccessToken';
 
-const useLiked = ({ offset = 0, limit = 20 }: { offset?: number; limit?: number } = {}) => {
+const useLiked = ({
+  enabled = false,
+  offset = 0,
+  limit = 20,
+}: { enabled?: boolean; offset?: number; limit?: number } = {}) => {
   const url = `https://api.spotify.com/v1/me/tracks?limit=${limit}&offset=${offset}`;
 
   return useQuery<SpotifyApi.UsersSavedTracksResponse>({
@@ -40,6 +44,7 @@ const useLiked = ({ offset = 0, limit = 20 }: { offset?: number; limit?: number 
     onError: (error) => {
       console.error(error);
     },
+    enabled,
   });
 };
 

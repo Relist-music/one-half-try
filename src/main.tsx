@@ -3,13 +3,13 @@ import { render } from 'react-dom';
 import { ThemeProvider as MuiThemeProvider, createTheme } from '@mui/material/styles';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { Link, RouterProvider, createBrowserRouter } from 'react-router-dom';
 
+import PlaylistContextProvider from '@/contexts/PlaylistContext';
 import { Callback, Login, Relist } from '@/pages';
-
+import Liked from '@/routes/relist/Liked';
+import { css } from '@/styled-system/css';
 import '@/index.css';
-import PlaylistContextProvider from './contexts/PlaylistContext';
-import Liked from './routes/relist/Liked';
 
 const router = createBrowserRouter([
   {
@@ -22,7 +22,20 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <div>supposed to be main, with history and other playlist tiles</div>,
+        element: (
+          <div>
+            supposed to be main, with history and other playlist tiles
+            <br />
+            <Link
+              to="/relist/likes"
+              className={css({
+                fontSize: '4xl',
+              })}
+            >
+              go to likes
+            </Link>
+          </div>
+        ),
       },
       {
         path: 'likes',

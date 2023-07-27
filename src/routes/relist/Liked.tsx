@@ -1,14 +1,14 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import { Combobox } from '@headlessui/react';
 import { Checkbox } from 'antd';
 import prettyMilliseconds from 'pretty-ms';
+import { useInView } from 'react-intersection-observer';
 
 import TrackGenresCell from '@/components/Cells/TrackGenresCell';
 import CountedGenres from '@/components/CountedGenres/CountedGenres';
 import TrackSkeleton from '@/components/Track/composites/TrackSkeleton';
 
-import useInfiniteArtists from '@/hooks/useInfinityArtists';
 import useLiked from '@/hooks/useLiked';
 
 import { PlaylistContext } from '@/contexts/PlaylistContext';
@@ -25,18 +25,40 @@ const PlaylistCombobox = () => {
 };
 
 const Liked = () => {
-  const { data: { items: tracks = [], limit } = {}, isLoading } = useLiked();
-  const { setTracks, setArtists, filters, artists } = useContext(PlaylistContext);
+  const { ref: thresholdRef, inView } = useInView({
+    threshold: 0,
+  });
+
+  const [playlistOffset, setPlaylistOffset] = useState(0);
+  const [playlistLimit] = useState(20);
+
+  const {
+    data: { items: fetchedTracks = [], limit = 20, offset = 0 } = {},
+    isLoading,
+    refetch,
+  } = useLiked({
+    offset: playlistOffset,
+    limit: playlistLimit,
+  });
+
+  useEffect(() => {
+    if (inView) {
+      console.log('never');
+      setPlaylistOffset((prevOffset) => {
+        console.log('prev', prevOffset);
+        return prevOffset + playlistLimit;
+      });
+      refetch();
+    }
+  }, [inView]);
+
+  const { setTracks, tracks, filters, artists } = useContext(PlaylistContext);
 
   const filterTracks = () => {
-    console.log(1);
     if (!filters.length) {
-      console.log(2);
       return tracks;
     } else {
-      console.log(3);
-      return tracks.filter(({ track }) => {
-        console.log('here', track.artists);
+      return tracks.filter((track) => {
         const trackGenres = track.artists.reduce((acc, trackArtist) => {
           const artistSearch = artists.find((artist) => trackArtist.id === artist.id);
           if (artistSearch) {
@@ -51,22 +73,15 @@ const Liked = () => {
     }
   };
 
-  console.log('tracks', tracks);
-
   const filteredTracks = filterTracks();
-  console.log('filteredTracks', filteredTracks, filters);
-  const artistIds = tracks
-    .map(({ track }) => {
-      return track.artists.map((artist) => artist.id);
-    })
-    .flat();
-
-  const artistsData = useInfiniteArtists({ artistIds });
 
   useEffect(() => {
-    setTracks(tracks.map(({ track }) => track) ?? []);
-    setArtists(artistsData.map(({ data }) => data ?? ({} as SpotifyApi.SingleArtistResponse)));
-  }, [tracks.length]);
+    setTracks((prevTracks) => [...prevTracks, ...fetchedTracks.map(({ track }) => track)]);
+  }, [fetchedTracks.length]);
+
+  // if (inView) {
+  //   refetch();
+  // }
 
   return (
     <div>
@@ -89,14 +104,14 @@ const Liked = () => {
         </div>
         <hr />
         <br />
-        <CountedGenres tracks={filteredTracks.map(({ track }) => track)} />
+        <CountedGenres tracks={filteredTracks.map((track) => track)} />
         <PlaylistCombobox />
       </div>
       <br />
       <hr />
       <br />
-      {isLoading &&
-        Array(10)
+      {(isLoading || fetchedTracks.length === 0) &&
+        Array(20)
           .fill(0)
           .map((_, index) => <TrackSkeleton key={`${index}-track`} />)}
 
@@ -109,7 +124,7 @@ const Liked = () => {
       >
         {filteredTracks.map((track) => (
           <div
-            key={`relist-track-${track.track.id}`}
+            key={`relist-track-${track.id}`}
             className={css({
               display: 'grid',
               gridTemplateColumns:
@@ -130,25 +145,22 @@ const Liked = () => {
               <Checkbox />
             </div>
             <div>
-              <img
-                src={track.track.album.images.at(0)?.url}
-                alt={`image of ${track.track.album.name}`}
-              />
+              <img src={track.album.images.at(0)?.url} alt={`image of ${track.album.name}`} />
             </div>
 
             <div>
-              <h2>{track.track.name}</h2>
-              <p>{track.track.artists.map((artist) => artist.name).join(', ')}</p>
-              <span>{track.track.album.name}</span>
+              <h2>{track.name}</h2>
+              <p>{track.artists.map((artist) => artist.name).join(', ')}</p>
+              <span>{track.album.name}</span>
             </div>
 
             <div>
-              <TrackGenresCell artistIds={track.track.artists.map((artist) => artist.id)} />
+              <TrackGenresCell artistIds={track.artists.map((artist) => artist.id)} />
             </div>
 
             <div>
               <h2>
-                {prettyMilliseconds(track.track.duration_ms, {
+                {prettyMilliseconds(track.duration_ms, {
                   keepDecimalsOnWholeSeconds: true,
                   secondsDecimalDigits: 0,
                 }).replace(/ /, '')}
@@ -165,6 +177,7 @@ const Liked = () => {
             flexDirection: 'column',
             gap: '2',
           })}
+          ref={thresholdRef}
         >
           {Array(5)
             .fill(0)

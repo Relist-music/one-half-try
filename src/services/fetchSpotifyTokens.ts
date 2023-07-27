@@ -9,12 +9,11 @@ export const fetchSpotifyTokens = async (code: string) => {
       }).toString(),
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
-        Authorization:
-          'Basic ' +
-          btoa(
-            `${import.meta.env.VITE_SPOTIFY_CLIENT_ID}:
-            ${import.meta.env.VITE_SPOTIFY_REDIRECT_URI}`,
-          ),
+        Authorization: `Basic ${btoa(
+          `${import.meta.env.VITE_SPOTIFY_CLIENT_ID}:${
+            import.meta.env.VITE_SPOTIFY_CLIENT_SECRET
+          }`,
+        )}`,
       },
     }).then((data) => data.json());
 

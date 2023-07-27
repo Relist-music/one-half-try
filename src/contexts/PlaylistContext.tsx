@@ -1,6 +1,4 @@
-import { ReactNode, createContext, useEffect, useState } from 'react';
-
-import useArtists from '@/hooks/useArtists';
+import { ReactNode, createContext, useState } from 'react';
 
 export type PlaylistContextProps = {
   tracks: SpotifyApi.TrackObjectFull[];

@@ -9,6 +9,17 @@ function ConnectWithSpotify() {
   const client_id = import.meta.env.VITE_SPOTIFY_CLIENT_ID ?? '';
   const redirect_uri = import.meta.env.VITE_SPOTIFY_REDIRECT_URI ?? '';
 
+  // console.log(
+  //   { client_id, redirect_uri, scopes },
+  //   new URLSearchParams({
+  //     client_id: String(client_id),
+  //     redirect_uri: String(redirect_uri),
+  //     scope: scopes.join(' '),
+  //     response_type: 'code',
+  //     show_dialog: String(true),
+  //   }).toString(),
+  // );
+
   const url = `https://accounts.spotify.com/authorize?${new URLSearchParams({
     client_id: String(client_id),
     redirect_uri: String(redirect_uri),
