@@ -8,11 +8,17 @@ import { onLayout } from '@/persistance/onLayout';
 import { css } from '@/styled-system/css';
 import { Container } from '@/styled-system/jsx';
 
+export type RelistOutletContext = [
+  hasScrolled: boolean,
+  setHasScrolled: React.Dispatch<React.SetStateAction<boolean>>,
+];
+
 const Relist = () => {
   let storage;
   if (typeof localStorage !== 'undefined') {
     storage = localStorage;
   }
+
   return (
     <div
       className={css({
@@ -22,7 +28,7 @@ const Relist = () => {
       })}
     >
       <PanelGroup id="panel-group" onLayout={onLayout} direction="horizontal" storage={storage}>
-        <Panel minSize={20} defaultSize={20} id="left-panel">
+        <Panel collapsedSize={6} collapsible={true} minSize={20} defaultSize={20} id="left-panel">
           <Sidebar />
         </Panel>
         <VerticalHandle />

@@ -1,23 +1,17 @@
-import { useContext, useEffect } from 'react';
-
-import useArtists from '@/hooks/useArtists';
-
-import { PlaylistContext } from '@/contexts/PlaylistContext';
 import Tag from '@/design-system/Tag/Tag';
 import { css } from '@/styled-system/css';
 
-const TrackGenresCell = ({ artistIds = [] }: { artistIds: string[] }) => {
-  const { setArtists } = useContext(PlaylistContext);
-  const { data: { artists = [] } = {}, isLoading } = useArtists({ artistIds });
-
-  useEffect(() => {
-    setArtists((prev) => [...prev, ...artists]);
-  }, [artists]);
-
-  if (!artists) {
-    return <h2>there was an error,please refresh</h2>;
-  }
-  if (isLoading) {
+const TrackGenresCell = ({
+  genres = [],
+  track,
+}: {
+  genres: string[] | undefined;
+  track: {
+    id: string;
+    added_at: string;
+  };
+}) => {
+  if (typeof genres === 'undefined') {
     return <h2>Loading...</h2>;
   }
   return (
@@ -28,9 +22,9 @@ const TrackGenresCell = ({ artistIds = [] }: { artistIds: string[] }) => {
         flexWrap: 'wrap',
       })}
     >
-      {artists.map((artist) => {
-        return artist.genres.map((genre) => <Tag key={`${artist.id}${genre}`} label={genre} />);
-      })}
+      {genres.map((genre) => (
+        <Tag key={`${track.id}-added-${track.added_at}-${genre}`} label={genre} />
+      ))}
     </div>
   );
 };

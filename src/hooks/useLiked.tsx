@@ -3,13 +3,16 @@ import { useQuery } from '@tanstack/react-query';
 import { refreshAccessToken } from '@/services/refreshAccessToken';
 
 const useLiked = ({
-  enabled = false,
   offset = 0,
   limit = 20,
-}: { enabled?: boolean; offset?: number; limit?: number } = {}) => {
+}: {
+  enabled?: boolean;
+  offset?: number;
+  limit?: number;
+}) => {
   const url = `https://api.spotify.com/v1/me/tracks?limit=${limit}&offset=${offset}`;
 
-  return useQuery<SpotifyApi.UsersSavedTracksResponse>({
+  const rqReturn = useQuery<SpotifyApi.UsersSavedTracksResponse>({
     queryKey: ['liked', { offset, limit }],
     queryFn: async () => {
       try {
@@ -44,8 +47,15 @@ const useLiked = ({
     onError: (error) => {
       console.error(error);
     },
-    enabled,
   });
+
+  // useEffect(() => {
+  //   rqReturn.data?.items.forEach((item) => {
+  //     queryClient.prefetchQuery()
+  //   });
+  // });
+
+  return rqReturn;
 };
 
 export default useLiked;

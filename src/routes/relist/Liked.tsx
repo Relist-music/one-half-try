@@ -1,87 +1,109 @@
-import { useContext, useEffect, useState } from 'react';
+/* eslint-disable indent */
+import { useEffect, useState } from 'react';
 
-import { Combobox } from '@headlessui/react';
+// import { useQueryClient } from '@tanstack/react-query';
+
 import { Checkbox } from 'antd';
 import prettyMilliseconds from 'pretty-ms';
-import { useInView } from 'react-intersection-observer';
 
 import TrackGenresCell from '@/components/Cells/TrackGenresCell';
 import CountedGenres from '@/components/CountedGenres/CountedGenres';
-import TrackSkeleton from '@/components/Track/composites/TrackSkeleton';
+import ActiveFilters from '@/components/CurrentPlaylist/ActiveFilters';
 
-import useLiked from '@/hooks/useLiked';
+import { fetchSpotifyWithRetry } from '@/services/fetchSpotify';
+import { playOrResumeTrack } from '@/services/PlayResumePlayback';
 
-import { PlaylistContext } from '@/contexts/PlaylistContext';
-import Tag from '@/design-system/Tag/Tag';
 import { css } from '@/styled-system/css';
 
-const PlaylistCombobox = () => {
-  return (
-    <Combobox value={''} onChange={() => undefined}>
-      <Combobox.Input />
-      <Combobox.Options></Combobox.Options>
-    </Combobox>
-  );
-};
+const LIMIT = 50;
+
+interface RelistTrack {
+  added_at: string;
+  track: SpotifyApi.TrackObjectFull & {
+    detailArtists?: SpotifyApi.ArtistObjectFull[];
+    genres?: string[];
+  };
+}
 
 const Liked = () => {
-  const { ref: thresholdRef, inView } = useInView({
-    threshold: 0,
-  });
-
-  const [playlistOffset, setPlaylistOffset] = useState(0);
-  const [playlistLimit] = useState(20);
-
-  const {
-    data: { items: fetchedTracks = [], limit = 20, offset = 0 } = {},
-    isLoading,
-    refetch,
-  } = useLiked({
-    offset: playlistOffset,
-    limit: playlistLimit,
-  });
+  const [offset, setOffset] = useState(0);
+  const [filters, setFilters] = useState<string[]>([]);
+  const [tracks, setTracks] = useState<RelistTrack[]>([]);
 
   useEffect(() => {
-    if (inView) {
-      console.log('never');
-      setPlaylistOffset((prevOffset) => {
-        console.log('prev', prevOffset);
-        return prevOffset + playlistLimit;
-      });
-      refetch();
-    }
-  }, [inView]);
+    setTracks([]);
+    setFilters([]);
+  }, []);
 
-  const { setTracks, tracks, filters, artists } = useContext(PlaylistContext);
-
-  const filterTracks = () => {
-    if (!filters.length) {
-      return tracks;
-    } else {
-      return tracks.filter((track) => {
-        const trackGenres = track.artists.reduce((acc, trackArtist) => {
-          const artistSearch = artists.find((artist) => trackArtist.id === artist.id);
-          if (artistSearch) {
-            acc.push(...artistSearch.genres);
-          }
-          return acc;
-        }, [] as string[]);
-        if (filters.length && trackGenres.some((genre) => filters.includes(genre))) {
-          return true;
-        }
+  useEffect(() => {
+    (async () => {
+      const { items = [] } = await fetchSpotifyWithRetry<SpotifyApi.UsersSavedTracksResponse>({
+        url: `https://api.spotify.com/v1/me/tracks?limit=${LIMIT}&offset=${offset}`,
       });
+      setTracks((prevTracks) => [...prevTracks, ...items]);
+
+      items.map(async ({ track }) => {
+        const artistsIds = track.artists.map((artist) => artist.id);
+        const { artists } = await fetchSpotifyWithRetry<SpotifyApi.MultipleArtistsResponse>({
+          url: `https://api.spotify.com/v1/artists?ids=${artistsIds.join(',')}`,
+        });
+        setTracks((prevTracks) =>
+          prevTracks.map((stateTrack) =>
+            stateTrack.track.id === track.id
+              ? {
+                  added_at: stateTrack.added_at,
+                  track: {
+                    ...track,
+                    detailArtists: artists,
+                    genres: Array.from(new Set(artists.map((artist) => artist.genres).flat())),
+                  },
+                }
+              : stateTrack,
+          ),
+        );
+      });
+    })();
+  }, [offset]);
+
+  const filteredTracks = tracks.filter(({ track }) => {
+    if (!track.detailArtists || filters.length === 0) return true;
+    else {
+      const genres = track.detailArtists.map((artist) => artist.genres).flat();
+      return filters.some((filter) => genres.includes(filter));
     }
+  });
+
+  const countedGenresObject = filteredTracks.reduce(
+    (acc: Record<string, number>, { track }) => {
+      if (!track.genres) return acc;
+
+      track.genres.forEach((genre) => {
+        acc[genre] = acc[genre] ? acc[genre] + 1 : 1;
+      });
+      return acc;
+    },
+    {} as Record<string, number>,
+  );
+
+  const addToFilters = (genre: string) => {
+    setFilters((prev) => Array.from(new Set([...prev, genre])));
   };
 
-  const filteredTracks = filterTracks();
+  const removeFilter = (genre: string) => {
+    setFilters((prev) => prev.filter((filter) => filter !== genre));
+  };
 
-  useEffect(() => {
-    setTracks((prevTracks) => [...prevTracks, ...fetchedTracks.map(({ track }) => track)]);
-  }, [fetchedTracks.length]);
-
-  // if (inView) {
-  //   refetch();
-  // }
+  const playCurrentList = async (track: RelistTrack) => {
+    const indexOfSelectedTrack = filteredTracks.findIndex(
+      (filteredTrack) => filteredTrack.track.id === track.track.id,
+    );
+    const uris = filteredTracks
+      .slice(indexOfSelectedTrack)
+      .map((filteredTrack) => filteredTrack.track.uri);
+    await playOrResumeTrack({
+      uris,
+    });
+  };
 
   return (
     <div>
@@ -93,98 +115,115 @@ const Liked = () => {
       >
         Liked
       </h1>
-      <div>
-        <div>
-          <h2>Filters</h2>
-          <div>
-            {filters.map((filter) => {
-              return <Tag key={filter} label={filter} />;
-            })}
-          </div>
-        </div>
-        <hr />
-        <br />
-        <CountedGenres tracks={filteredTracks.map((track) => track)} />
-        <PlaylistCombobox />
-      </div>
-      <br />
-      <hr />
-      <br />
-      {(isLoading || fetchedTracks.length === 0) &&
-        Array(20)
-          .fill(0)
-          .map((_, index) => <TrackSkeleton key={`${index}-track`} />)}
+      <p
+        className={css({
+          fontSize: '3xl',
+          marginBottom: '2',
+        })}
+      >
+        <ActiveFilters filters={filters} removeFilter={removeFilter} />
+      </p>
+      <hr
+        className={css({
+          marginBlock: '1',
+        })}
+      />
 
+      <CountedGenres countedGenresObject={countedGenresObject} addToFilters={addToFilters} />
+      <hr
+        className={css({
+          marginBlock: '1',
+          marginBlockEnd: '4',
+        })}
+      />
       <div
         className={css({
           display: 'flex',
           flexDirection: 'column',
-          gap: '3',
+          gap: '4',
         })}
       >
-        {filteredTracks.map((track) => (
-          <div
-            key={`relist-track-${track.id}`}
-            className={css({
-              display: 'grid',
-              gridTemplateColumns:
-                'min-content minmax(80px,120px) 1fr 1fr max-content min-content',
-              gap: '2',
-            })}
-          >
-            <div
-              className={css({
-                paddingInline: '2',
-                display: 'flex',
-                alignItems: 'center',
-                _hover: {
-                  bg: '#28333799',
-                },
-              })}
-            >
-              <Checkbox />
-            </div>
-            <div>
-              <img src={track.album.images.at(0)?.url} alt={`image of ${track.album.name}`} />
-            </div>
+        {filteredTracks.length &&
+          filteredTracks.map((relistTrack) => {
+            const { added_at, track } = relistTrack;
+            return (
+              <div
+                key={`relist-track-${track.id}`}
+                className={css({
+                  display: 'grid',
+                  gridTemplateColumns:
+                    'min-content minmax(80px,120px) 1fr 1fr max-content min-content',
+                  gap: '2',
+                })}
+                onClick={() => {
+                  console.log('play', relistTrack);
+                  playCurrentList(relistTrack);
+                }}
+              >
+                <div
+                  className={css({
+                    paddingInline: '2',
+                    display: 'flex',
+                    alignItems: 'center',
+                    _hover: {
+                      bg: '#28333799',
+                    },
+                  })}
+                >
+                  <Checkbox />
+                </div>
+                <div>
+                  <img src={track.album.images.at(0)?.url} alt={`image of ${track.album.name}`} />
+                </div>
 
-            <div>
-              <h2>{track.name}</h2>
-              <p>{track.artists.map((artist) => artist.name).join(', ')}</p>
-              <span>{track.album.name}</span>
-            </div>
+                <div>
+                  <h2>{track.name}</h2>
+                  <p>{track.artists.map((artist) => artist.name).join(', ')}</p>
+                  <span>{track.album.name}</span>
+                </div>
 
-            <div>
-              <TrackGenresCell artistIds={track.artists.map((artist) => artist.id)} />
-            </div>
+                <div>
+                  <TrackGenresCell
+                    genres={track.genres}
+                    track={{
+                      id: track.id,
+                      added_at: added_at,
+                    }}
+                  />
+                </div>
 
-            <div>
-              <h2>
-                {prettyMilliseconds(track.duration_ms, {
-                  keepDecimalsOnWholeSeconds: true,
-                  secondsDecimalDigits: 0,
-                }).replace(/ /, '')}
-              </h2>
-            </div>
+                <div>
+                  <h2>
+                    {prettyMilliseconds(track.duration_ms, {
+                      keepDecimalsOnWholeSeconds: true,
+                      secondsDecimalDigits: 0,
+                    }).replace(/ /, '')}
+                  </h2>
+                </div>
 
-            <div>❤️</div>
-          </div>
-        ))}
-        <div
-          id="placerholder-wrapper"
-          className={css({
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '2',
+                <div>❤️</div>
+              </div>
+            );
           })}
-          ref={thresholdRef}
+      </div>
+      <br />
+      <div
+        className={css({
+          display: 'flex',
+          justifyContent: 'center',
+        })}
+      >
+        <button
+          className={css({
+            padding: '2',
+            bg: 'white',
+            borderRadius: 'sm',
+            cursor: 'pointer',
+          })}
+          onClick={() => setOffset((prev) => prev + LIMIT)}
         >
-          {Array(5)
-            .fill(0)
-            .map((_, index) => (
-              <TrackSkeleton key={`placeholder${index}`} />
-            ))}
-        </div>
+          Load more
+        </button>
       </div>
     </div>
   );
