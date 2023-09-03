@@ -28,3 +28,8 @@ src/styled-system/*
 
 # env keys
 .env
+
+.env*
+.flaskenv*
+!.env.project
+!.env.vault
