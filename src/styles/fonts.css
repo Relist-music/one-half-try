@@ -8,10 +8,10 @@
 
 @font-face {
   font-family: 'Switzer';
-  src: url('../../fonts/switzer//Switzer-Thin') format('woff2'),
-    url('../../fonts/switzer//Switzer-Thin.woff') format('woff'),
-    url('../../fonts/switzer//Switzer-Thin.ttf') format('truetype'),
-    url('../../fonts/switzer//Switzer-Thin.eot') format('eot');
+  src: url('../../fonts/switzer/Switzer-Thin') format('woff2'),
+    url('../../fonts/switzer/Switzer-Thin.woff') format('woff'),
+    url('../../fonts/switzer/Switzer-Thin.ttf') format('truetype'),
+    url('../../fonts/switzer/Switzer-Thin.eot') format('eot');
   font-weight: 100;
   font-style: normal;
   font-display: swap;
@@ -19,10 +19,10 @@
 
 @font-face {
   font-family: 'Switzer';
-  src: url('../../fonts/switzer//Switzer-ThinItalic.woff2') format('woff2'),
-    url('../../fonts/switzer//Switzer-ThinItalic.woff') format('woff'),
-    url('../../fonts/switzer//Switzer-ThinItalic.ttf') format('truetype'),
-    url('../../fonts/switzer//Switzer-ThinItalic.eot') format('eot');
+  src: url('../../fonts/switzer/Switzer-ThinItalic.woff2') format('woff2'),
+    url('../../fonts/switzer/Switzer-ThinItalic.woff') format('woff'),
+    url('../../fonts/switzer/Switzer-ThinItalic.ttf') format('truetype'),
+    url('../../fonts/switzer/Switzer-ThinItalic.eot') format('eot');
   font-weight: 100;
   font-style: italic;
   font-display: swap;
@@ -30,10 +30,10 @@
 
 @font-face {
   font-family: 'Switzer';
-  src: url('../../fonts/switzer//Switzer-Extralight.woff2') format('woff2'),
-    url('../../fonts/switzer//Switzer-Extralight.woff') format('woff'),
-    url('../../fonts/switzer//Switzer-Extralight.ttf') format('truetype'),
-    url('../../fonts/switzer//Switzer-Extralight.eot') format('eot');
+  src: url('../../fonts/switzer/Switzer-Extralight.woff2') format('woff2'),
+    url('../../fonts/switzer/Switzer-Extralight.woff') format('woff'),
+    url('../../fonts/switzer/Switzer-Extralight.ttf') format('truetype'),
+    url('../../fonts/switzer/Switzer-Extralight.eot') format('eot');
   font-weight: 200;
   font-style: normal;
   font-display: swap;
@@ -41,10 +41,10 @@
 
 @font-face {
   font-family: 'Switzer';
-  src: url('../../fonts/switzer//Switzer-ExtralightItalic.woff2') format('woff2'),
-    url('../../fonts/switzer//Switzer-ExtralightItalic.woff') format('woff'),
-    url('../../fonts/switzer//Switzer-ExtralightItalic.ttf') format('truetype'),
-    url('../../fonts/switzer//Switzer-ExtralightItalic.eot') format('eot');
+  src: url('../../fonts/switzer/Switzer-ExtralightItalic.woff2') format('woff2'),
+    url('../../fonts/switzer/Switzer-ExtralightItalic.woff') format('woff'),
+    url('../../fonts/switzer/Switzer-ExtralightItalic.ttf') format('truetype'),
+    url('../../fonts/switzer/Switzer-ExtralightItalic.eot') format('eot');
   font-weight: 200;
   font-style: italic;
   font-display: swap;
@@ -52,10 +52,10 @@
 
 @font-face {
   font-family: 'Switzer';
-  src: url('../../fonts/switzer//Switzer-Light.woff2') format('woff2'),
-    url('../../fonts/switzer//Switzer-Light.woff') format('woff'),
-    url('../../fonts/switzer//Switzer-Light.ttf') format('truetype'),
-    url('../../fonts/switzer//Switzer-Light.eot') format('eot');
+  src: url('../../fonts/switzer/Switzer-Light.woff2') format('woff2'),
+    url('../../fonts/switzer/Switzer-Light.woff') format('woff'),
+    url('../../fonts/switzer/Switzer-Light.ttf') format('truetype'),
+    url('../../fonts/switzer/Switzer-Light.eot') format('eot');
   font-weight: 300;
   font-style: normal;
   font-display: swap;

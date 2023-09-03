@@ -46,7 +46,13 @@ export default defineConfig({
       fonts: {
         tag: { value: 'apfel-grotezk' },
       },
+      sizes: {
+        ...presetPanda.theme.tokens.sizes,
+      },
     },
+  },
+  patterns: {
+    extend: {},
   },
   jsxFramework: 'react',
 

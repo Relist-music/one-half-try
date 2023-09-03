@@ -6,7 +6,6 @@ import Sidebar from '@/components/Sidebar/Sidebar';
 
 import { onLayout } from '@/persistance/onLayout';
 import { css } from '@/styled-system/css';
-import { Container } from '@/styled-system/jsx';
 
 export type RelistOutletContext = [
   hasScrolled: boolean,
@@ -35,16 +34,12 @@ const Relist = () => {
         <Panel minSize={50} id="right-panel">
           <div
             className={css({
-              p: '4',
               bg: 'primary',
               height: '100%',
               rounded: 'md',
-              overflowY: 'scroll',
             })}
           >
-            <Container>
-              <Outlet />
-            </Container>
+            <Outlet />
           </div>
         </Panel>
       </PanelGroup>
